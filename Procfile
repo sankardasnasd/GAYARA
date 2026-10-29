@@ -1,0 +1,1 @@
+web: gunicorn gayara_core.wsgi:application
