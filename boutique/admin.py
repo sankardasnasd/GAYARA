@@ -17,3 +17,15 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'fabric', 'silhouette', 'craft', 'is_available')
     list_filter = ('silhouette', 'craft', 'is_available')
     search_fields = ('name', 'fabric', 'color')
+
+
+
+
+from .models import ContactMessage
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'subject', 'order_number', 'created_at')
+    search_fields = ('full_name', 'email', 'order_number', 'subject')
+    list_filter = ('created_at',)
+    readonly_fields = ('created_at',)

@@ -32,3 +32,12 @@ class ProductSerializer(serializers.ModelSerializer):
             'silhouette_name',
             'created_at'
         ]
+
+
+
+from .models import ContactMessage
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = ['id', 'full_name', 'email', 'order_number', 'subject', 'message', 'created_at']

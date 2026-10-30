@@ -29,3 +29,22 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+from django.db import models
+
+class ContactMessage(models.Model):
+    full_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    order_number = models.CharField(max_length=100, blank=True, null=True)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.subject}"
+
+    class Meta:
+        ordering = ['-created_at']
