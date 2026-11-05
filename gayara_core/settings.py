@@ -151,3 +151,21 @@ MAILERS = {
 CSRF_TRUSTED_ORIGINS = [
     'https://gayara-backend.onrender.com',
 ]
+
+
+
+
+
+MAILERS = {
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "HOST": "smtp.gmail.com",
+        "PORT": 587,
+        "USE_TLS": True,
+        "USERNAME": "contactgayara@gmail.com",
+        "PASSWORD": "xpev ayql ziug jwlb",
+    }
+}
+
+DEFAULT_FROM_EMAIL = 'GAYARA Studio <contactgayara@gmail.com>'
+SERVER_EMAIL = 'contactgayara@gmail.com'

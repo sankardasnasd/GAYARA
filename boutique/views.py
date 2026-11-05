@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 
 from rest_framework import generics
-from .models import Product, Craft, Silhouette
+from .models import ContactMessage, Product, Craft, Silhouette
 from .serializers import ProductSerializer, CraftSerializer, SilhouetteSerializer
 
 class ProductListAPIView(generics.ListAPIView):
@@ -41,3 +41,23 @@ def submit_contact_form(request):
             status=status.HTTP_201_CREATED
         )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from django.core.mail import send_mail
+
+class ContactMessageCreateView(generics.CreateAPIView):
+    queryset = ContactMessage.objects.all()
+    serializer_class = ContactMessageSerializer
+
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        try:
+            send_mail(
+                subject=f"🌸 New GAYARA Message: {instance.subject}",
+                message=f"Name: {instance.full_name}\nEmail: {instance.email}\nOrder No: {instance.order_number or 'N/A'}\n\nMessage:\n{instance.message}",
+                from_email='contactgayara@gmail.com',
+                recipient_list=['contactgayara@gmail.com'],
+                fail_silently=True,
+            )
+        except Exception as e:
+            print("Email sending failed:", e)
