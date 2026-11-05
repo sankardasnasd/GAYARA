@@ -156,16 +156,18 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 
-MAILERS = {
-    "default": {
-        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
-        "HOST": "smtp.gmail.com",
-        "PORT": 587,
-        "USE_TLS": True,
-        "USERNAME": "contactgayara@gmail.com",
-        "PASSWORD": "xpev ayql ziug jwlb",
-    }
-}
+
+
+import os
+
+# Django Standard Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'contactgayara@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'xpev ayql ziug jwlb')
 
 DEFAULT_FROM_EMAIL = 'GAYARA Studio <contactgayara@gmail.com>'
 SERVER_EMAIL = 'contactgayara@gmail.com'
