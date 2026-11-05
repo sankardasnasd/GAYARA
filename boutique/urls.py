@@ -1,5 +1,11 @@
 from django.urls import path
-from .views import ProductListAPIView, ProductDetailAPIView, CraftListAPIView, SilhouetteListAPIView,submit_contact_form
+from .views import (
+    ProductListAPIView, 
+    ProductDetailAPIView, 
+    CraftListAPIView, 
+    SilhouetteListAPIView,
+    ContactMessageCreateView
+)
 
 urlpatterns = [
     path('products/', ProductListAPIView.as_view(), name='product-list'),
@@ -7,5 +13,5 @@ urlpatterns = [
     path('crafts/', CraftListAPIView.as_view(), name='craft-list'),
     path('silhouettes/', SilhouetteListAPIView.as_view(), name='silhouette-list'),
 
-    path('contact/', submit_contact_form, name='contact-submit'),
+    path('contact/', ContactMessageCreateView.as_view(), name='contact-submit'),
 ]
