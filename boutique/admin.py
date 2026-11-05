@@ -1,28 +1,22 @@
 from django.contrib import admin
-
-# Register your models here.
-from django.contrib import admin
-from .models import Craft, Silhouette, Product
+from .models import Craft, Silhouette, Product, ContactMessage
 
 @admin.register(Craft)
 class CraftAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+    search_fields = ('name',)
 
 @admin.register(Silhouette)
 class SilhouetteAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+    search_fields = ('name',)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'fabric', 'silhouette', 'craft', 'is_available')
-    list_filter = ('silhouette', 'craft', 'is_available')
-    search_fields = ('name', 'fabric', 'color')
-
-
-
-
-from django.contrib import admin
-from .models import ContactMessage  
+    list_display = ('name', 'price', 'craft', 'fabric', 'available_sizes', 'is_available')
+    list_filter = ('craft', 'is_available', 'silhouette')
+    search_fields = ('name', 'description', 'fabric')
+    list_editable = ('price', 'is_available')
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
