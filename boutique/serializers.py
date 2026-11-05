@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Craft, Silhouette, Product
+from .models import Craft, Silhouette, Product, ContactMessage
 
 class CraftSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,18 +24,15 @@ class ProductSerializer(serializers.ModelSerializer):
             'fabric', 
             'price', 
             'color', 
+            'available_sizes', 
             'image', 
             'is_available', 
             'craft', 
             'craft_name', 
             'silhouette', 
-            'silhouette_name',
+            'silhouette_name', 
             'created_at'
         ]
-
-
-
-from .models import ContactMessage
 
 class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:
