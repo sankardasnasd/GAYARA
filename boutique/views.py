@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from rest_framework import generics
+from rest_framework import generics, settings
 from .models import ContactMessage, Product, Craft, Silhouette
 from .serializers import ProductSerializer, CraftSerializer, SilhouetteSerializer
 
@@ -24,34 +24,34 @@ class SilhouetteListAPIView(generics.ListAPIView):
 
 
 
-
-from rest_framework import generics, status
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.core.mail import send_mail
-from django.conf import settings
-from .models import ContactMessage
 from .serializers import ContactMessageSerializer
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def submit_contact_form(request):
+    serializer = ContactMessageSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Message received successfully!"},
+            status=status.HTTP_201_CREATED
+        )
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from django.core.mail import send_mail
 
 class ContactMessageCreateView(generics.CreateAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
-    permission_classes = [AllowAny]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        
-        return Response(
-            {"message": "Thank you! Your message has been received."},
-            status=status.HTTP_201_CREATED
-        )
 
     def perform_create(self, serializer):
         instance = serializer.save()
         
-        # Email Notification Sending
         try:
             subject = f"🌸 New GAYARA Message: {instance.subject}"
             body = (
@@ -66,7 +66,8 @@ class ContactMessageCreateView(generics.CreateAPIView):
                 message=body,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=['contactgayara@gmail.com'],
-                fail_silently=True,
+                fail_silently=False,  
             )
+            print(">>> EMAIL SENT SUCCESSFULLY! <<<")
         except Exception as e:
-            print("Email sending error:", e)
+            print(">>> CRITICAL EMAIL ERROR:", repr(e))
